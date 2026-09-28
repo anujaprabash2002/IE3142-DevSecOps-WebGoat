@@ -26,9 +26,23 @@ jobs:
 
       - name: Compile WebGoat with Maven
         working-directory: webgoat
-        run:  |
+        run: |
           chmod +x mvnw
           ./mvnw -B -DskipTests package
-          
+
       - name: Build images
         run: docker compose build
+
+  secrets-gitleaks:
+    name: Secrets scan (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/repo" \
+            ghcr.io/gitleaks/gitleaks:latest detect \
+            --source /repo --redact --verbose --exit-code 1
