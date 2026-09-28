@@ -1,0 +1,8 @@
+title = "IE3142 Gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "WebGoat lesson tests contain intentionally fake JWTs and keys"
+paths = ['''^webgoat/src/test/''']
