@@ -14,7 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Validate compose file
         run: docker compose config -q
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+
+      - name: Compile WebGoat with Maven
+        working-directory: webgoat
+        run: ./mvnw -B -DskipTests package
+
       - name: Build images
         run: docker compose build
