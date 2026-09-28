@@ -26,7 +26,9 @@ jobs:
 
       - name: Compile WebGoat with Maven
         working-directory: webgoat
-        run: ./mvnw -B -DskipTests package
-
+        run:  |
+          chmod +x mvnw
+          ./mvnw -B -DskipTests package
+          
       - name: Build images
         run: docker compose build
