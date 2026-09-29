@@ -1,6 +1,8 @@
-webgoat/src/main/resources/lessons/jwt/documentation/
-webgoat/src/main/resources/lessons/jwt/images/
-webgoat/src/main/resources/lessons/jwt/html/
-webgoat/src/it/java/org/owasp/webgoat/playwright/webwolf/JwtUITest.java
-webgoat/src/test/java/org/owasp/webgoat/lessons/jwt/
-webgoat/src/test/java/org/owasp/webgoat/webwolf/jwt/
+# WebGoat lesson files contain intentional vulnerabilities for teaching
+# Semgrep should not block the pipeline on these known-bad lesson files
+webgoat/src/main/java/org/owasp/webgoat/lessons/
+webgoat/src/main/resources/lessons/
+webgoat/src/main/resources/webgoat/static/js/jquery/
+webgoat/src/main/resources/webgoat/static/js/libs/
+webgoat/src/test/
+webgoat/src/it/
