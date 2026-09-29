@@ -1,0 +1,4 @@
+webgoat/src/main/resources/lessons/jwt/documentation/
+webgoat/src/main/resources/lessons/jwt/images/
+webgoat/src/main/resources/lessons/jwt/html/
+webgoat/src/it/java/org/owasp/webgoat/playwright/webwolf/JwtUITest.java
