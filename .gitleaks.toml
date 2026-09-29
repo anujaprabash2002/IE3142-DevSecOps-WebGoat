@@ -1,6 +1,8 @@
-﻿title = "IE3142 Gitleaks config"
+title = "IE3142 Gitleaks config"
+
 [extend]
 useDefault = true
+
 [[allowlists]]
 description = "WebGoat lessons, docs and tests contain intentionally fake secrets"
 paths = [
