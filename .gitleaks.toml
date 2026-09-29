@@ -11,3 +11,8 @@ paths = [
   '''^webgoat/src/main/java/org/owasp/webgoat/lessons/''',
   '''^webgoat/src/main/resources/lessons/''',
 ]
+[[allowlists]]
+description = "Deliberate fake secret used for CI/CD blocking-gate demo (commit 4ac0d888), removed in commit 14f6919"
+regexes = [
+  '''GITHUB_TOKEN=ghp_9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a''',
+]
