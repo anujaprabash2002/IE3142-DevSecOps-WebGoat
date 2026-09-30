@@ -7,10 +7,11 @@ package org.owasp.webgoat.lessons.ssrf;
 import static org.owasp.webgoat.container.assignments.AttackResultBuilder.failed;
 import static org.owasp.webgoat.container.assignments.AttackResultBuilder.success;
 
+import java.net.URI;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.nio.charset.StandardCharsets;
 import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
 import org.owasp.webgoat.container.assignments.AssignmentHints;
@@ -32,26 +33,46 @@ public class SSRFTask2 implements AssignmentEndpoint {
 
   protected AttackResult furBall(String url) {
     if (url.matches("http://ifconfig\\.pro")) {
-      String html;
-      try (InputStream in = new URL(url).openStream()) {
-        html =
-            new String(in.readAllBytes(), StandardCharsets.UTF_8)
-                .replaceAll("\n", "<br>"); // Otherwise the \n gets escaped in the response
-      } catch (MalformedURLException e) {
-        return getFailedResult(e.getMessage());
-      } catch (IOException e) {
-        // in case the external site is down, the test and lesson should still be ok
-        html =
-            "<html><body>Although the http://ifconfig.pro site is down, you still managed to solve"
-                + " this exercise the right way!</body></html>";
-      }
-      return success(this).feedback("ssrf.success").output(html).build();
+        String html;
+
+        URI parsedUrl;
+
+        try {
+            parsedUrl = URI.create(url);
+        } catch (IllegalArgumentException e) {
+            return getFailedResult("Invalid URL");
+        }
+
+        if (!"http".equalsIgnoreCase(parsedUrl.getScheme())
+                || !"ifconfig.pro".equalsIgnoreCase(parsedUrl.getHost())
+                || parsedUrl.getPort() != -1
+                || parsedUrl.getUserInfo() != null) {
+            return getFailedResult("URL blocked");
+        }
+
+        try (InputStream in = parsedUrl.toURL().openStream()) {
+            html =
+                new String(in.readAllBytes(), StandardCharsets.UTF_8)
+                    .replaceAll("\n", "<br>");
+        } catch (MalformedURLException e) {
+            return getFailedResult(e.getMessage());
+        } catch (IOException e) {
+            html =
+                "<html><body>Although the http://ifconfig.pro site is down, "
+                    + "you still managed to solve this exercise the right way!</body></html>";
+        }
+
+        return success(this).feedback("ssrf.success").output(html).build();
     }
+
     var html = "<img class=\"image\" alt=\"image post\" src=\"images/cat.jpg\">";
     return getFailedResult(html);
-  }
+ }
 
-  private AttackResult getFailedResult(String errorMsg) {
-    return failed(this).feedback("ssrf.failure").output(errorMsg).build();
-  }
+ private AttackResult getFailedResult(String errorMsg) {
+    return failed(this)
+        .feedback("ssrf.failure")
+        .output(errorMsg)
+        .build();
+ }
 }
